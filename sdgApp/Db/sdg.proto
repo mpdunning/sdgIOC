@@ -1,0 +1,25 @@
+# Use this file if the "Set newline to host" option (set:ser:nl) has not been set. 
+
+InTerminator=CR;
+OutTerminator=CR;
+
+getStatus       { Separator="," ; out "status?" ;in "\000%s"      ; }
+#getBWDDiodeStat { out "read:sta:bwd?"           ;in "\000%{0|1},0,0,%*{0|1},0,0,0,0,0,0,0,0,0,0,0,0"   ; }
+#getBWDIntStat   { out "read:bwd?"               ;in "\000%{0|1|9}" ; }
+
+resetBWD        { out "reset:bwd"                                    ; }
+#setBWDThresh    { out "set:bwd:lv %i"                            ; }
+
+####
+####
+setCh1          { out "set:c1 %{0|1}"                            ; }
+setCh1Delay     { out "set:del:c1 %07.2f"                          ; }
+##
+setCh2          { out "set:c2 %{0|1}"                            ; }
+setCh2Delay     { out "set:del:c2 %07.2f"                          ; }
+##
+setCh3          { out "set:c3 %{0|1}"                            ; }
+setCh3Delay     { out "set:del:c3 %07.2f"                          ; }
+####
+####
+

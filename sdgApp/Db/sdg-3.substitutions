@@ -1,0 +1,8 @@
+file sdg01.template
+{
+pattern{ N, S }
+       { 1, A }
+       { 2, B }
+       { 3, C }
+}
+

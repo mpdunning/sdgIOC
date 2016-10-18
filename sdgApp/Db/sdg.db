@@ -1,0 +1,118 @@
+
+record( stringin, "$(P):SI:IOCNAME") {
+  field( PINI, "YES")
+  field( VAL,  "$(IOCNAME)")
+}
+
+record(bo,"$(P):BO:BWD:INT:RESET"){
+  field( DESC, "Reset BWD Interlock")
+  field( DTYP, "stream")
+  field( OUT,  "@$(PROTOFILE) resetBWD $(L) $(A)")
+}
+
+record( waveform, "$(P):WF:STATUS"){
+  field( DESC, "Status")
+  field( DTYP, "stream")
+  field( INP,  "@$(PROTOFILE) getStatus $(L) $(A)")
+  field( SCAN, "1 second")
+  field( NELM, "170")
+  field( FTVL, "CHAR")
+  field( PINI, "YES")
+  field( FLNK, "$(P):FO:STATUS1 PP")
+}
+
+record( fanout, "$(P):FO:STATUS1"){
+  field( LNK1, "$(P):AS:CHAN")
+  field( LNK2, "$(P):AS:DELAY")
+  field( LNK3, "$(P):AS:INFO")
+}
+
+record( aSub, "$(P):AS:CHAN"){
+  field( DESC, "unpack channel string")
+  field( SNAM, "asChan")
+  #field( EFLG, "ALWAYS")
+  field( INPA, "$(P):WF:STATUS")
+  field( NOA,  "170")
+  field( FTA,  "CHAR")
+  field( FTVA, "LONG") field( NOVA, "1")
+  field( FTVB, "LONG") field( NOVB, "1")
+  field( FTVC, "LONG") field( NOVC, "1")
+  field( FLNK, "$(P):FO:CHAN1 PP")
+}
+
+record( fanout, "$(P):FO:CHAN1"){
+  field( LNK1, "$(P):BI:CH1")
+  field( LNK2, "$(P):BI:CH2")
+  field( LNK3, "$(P):BI:CH3")
+}
+
+record( aSub, "$(P):AS:DELAY"){
+  field( DESC, "unpack delay string")
+  field( SNAM, "asDelay")
+  field( INPA, "$(P):WF:STATUS")
+  field( NOA,  "170")
+  field( FTA,  "CHAR")
+  field( FTVA, "FLOAT") field( NOVA, "1")
+  field( FTVB, "FLOAT") field( NOVB, "1")
+  field( FTVC, "FLOAT") field( NOVC, "1")
+  field( FLNK, "$(P):FO:DELAY1 PP")
+}
+
+record( fanout, "$(P):FO:DELAY1"){
+  field( LNK1, "$(P):AI:CH1:DELAY")
+  field( LNK2, "$(P):AI:CH2:DELAY")
+  field( LNK3, "$(P):AI:CH3:DELAY")
+}
+
+record( aSub, "$(P):AS:INFO"){
+  field( DESC, "unpack info string")
+  field( SNAM, "asInfo")
+  field( INPA, "$(P):WF:STATUS")
+  field( NOA,  "170")
+  field( FTA,  "CHAR")
+  field( FTVA, "LONG")  field( NOVA, "1")
+  field( FTVB, "LONG")  field( NOVB, "1")
+  field( FTVC, "LONG")  field( NOVC, "1")
+  field( FTVD, "LONG")  field( NOVD, "1")
+  field( FTVE, "LONG")  field( NOVE, "1")
+  field( FLNK, "$(P):FO:INFO1 PP")
+}
+
+record( fanout, "$(P):FO:INFO1"){
+  field( LNK4, "$(P):BI:TRIG:MODE")
+  field( LNK5, "$(P):LI:TRIG:DIV")
+}
+
+record(longin,"$(P):LI:TRIG:DIV"){
+  field( DESC, "Trigger Divisor")
+  field( INP,  "$(P):AS:INFO.VALA")
+}
+
+record(bi,"$(P):BI:BWD:STATE"){
+  field( DESC, "BWD switch state")
+  field( INP,  "$(P):AS:INFO.VALB")
+  field( ZNAM, "Off")
+  field( ONAM, "On")
+}
+
+record(longin,"$(P):INT:STATE"){
+  field( DESC, "Interlock state")
+  field( INP,  "$(P):AS:INFO.VALC")
+}
+
+record(bi,"$(P):BI:TRIG:MODE"){
+  field( DESC, "Trigger Mode")
+  field( INP,  "$(P):AS:INFO.VALD")
+  field( ZNAM, "Continuous")
+  field( ONAM, "Single Shot")
+}
+
+record(bi,"$(P):RFSYNC:STATE"){
+  field( DESC, "RF Sync state")
+  field( INP,  "$(P):AS:INFO.VALE")
+  field( ZNAM, "Enabled")
+  field( ONAM, "Disabled")
+}
+
+
+###########################################################
